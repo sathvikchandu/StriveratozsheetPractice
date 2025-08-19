@@ -1,23 +1,34 @@
+"""
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
 
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].
+"""
 
-nums=[3,2,1]
-idx=-1
-n=len(nums)
+from typing import List
 
-for i in range(n-2,-1,-1):
-    if nums[i]<nums[i+1]:
-        idx=i
-        break
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        n = len(nums)
+        idx = -1
 
-if idx==-1:
-    print(nums[::-1])
+        # Step 1: Find the first decreasing element from the right
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                idx = i
+                break
 
-for i in range(n-1,idx,-1):
-    if nums[i]>nums[idx]:
-        nums[i],nums[idx]=nums[idx],nums[i]
-nums1=nums[:idx+1]
-nums2=nums[idx+1:]
-nums2=nums2[::-1]
+        # Step 2: If not found, reverse whole list
+        if idx == -1:
+            nums.reverse()
+            return
 
-print(nums1+nums2)
+        # Step 3: Find the next larger element to swap
+        for i in range(n - 1, idx, -1):
+            if nums[i] > nums[idx]:
+                nums[i], nums[idx] = nums[idx], nums[i]
+                break   # important!!
+
+        # Step 4: Reverse the suffix
+        nums[idx + 1:] = reversed(nums[idx + 1:])
+
 
